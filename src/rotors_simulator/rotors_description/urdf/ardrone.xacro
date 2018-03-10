@@ -136,5 +136,23 @@
     <xacro:insert_block name="rotor_inertia" />
   </xacro:vertical_rotor>
 
+ <!--Mount a Camera-->
+  <xacro:camera_macro
+      namespace="${namespace}"
+      parent_link="${namespace}/base_link"
+      camera_suffix="base"
+      frame_rate="30.0"
+      horizontal_fov="1.7"
+      image_width="856"
+      image_height="480"
+      image_format="R8G8B8"
+      min_distance="0.02"
+      max_distance="50"
+      noise_mean="0.0"
+      noise_stddev="0.007"
+      enable_visual="true">
+      <box size="0.001 0.001 0.001" />
+      <origin xyz="0.1 0 -0.07" rpy="0 0 0" />
+  </xacro:camera_macro>
 
 </robot>
