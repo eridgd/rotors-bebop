@@ -3,7 +3,7 @@
     <arg name="namespace" default="bebop" />
     <arg name="ip" default="192.168.42.1" />
     <arg name="drone_type" default="bebop2" /> <!-- available drone types: bebop1, bebop2 -->
-    <arg name="config_file" default="$(find bebop_driver)/config/outdoor.yaml" />
+    <arg name="config_file" default="$(find bebop_driver)/config/defaults.yaml" />
     <arg name="camera_info_url" default="package://bebop_driver/data/$(arg drone_type)_camera_calib.yaml" />
     <group ns="$(arg namespace)">
         <!-- nodelet manager -->
@@ -31,6 +31,6 @@
         <param name="target_size" value="320,240"/>
         <param name="crop_size" value="200,200"/>
 
-    </node>`
+    </node>
 
 </launch>

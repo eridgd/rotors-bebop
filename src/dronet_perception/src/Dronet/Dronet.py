@@ -50,7 +50,7 @@ class Dronet(object):
             data = None
             while data is None:
                 try:
-                    data = rospy.wait_for_message("camera", Image, timeout=10)
+                    data = rospy.wait_for_message("/ardrone/camera_base/image_raw", Image, timeout=10)
                 except:
                     pass
 
@@ -65,4 +65,7 @@ class Dronet(object):
             steer, coll = outs[0][0], outs[1][0]
             msg.steering_angle = steer
             msg.collision_prob = coll
+
+            print("Steering: {}\nCollision: {}".format(steer, coll))
+
             self.pub.publish(msg)

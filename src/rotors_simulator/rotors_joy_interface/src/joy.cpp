@@ -106,7 +106,7 @@ void Joy::JoyCallback(const sensor_msgs::JoyConstPtr& msg) {
 }
 
 void Joy::Publish() {
-  ROS_INFO_STREAM(control_msg_);
+  // ROS_INFO_STREAM(control_msg_);
   ctrl_pub_.publish(control_msg_);
 }
 
