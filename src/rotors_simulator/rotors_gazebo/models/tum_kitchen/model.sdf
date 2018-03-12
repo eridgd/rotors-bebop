@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="tum_kitchen">
+    <static>true</static>
+    <pose>0 0 0 0 0 0</pose>
+    <link name="link">
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model:///tum_kitchen/meshes/tum_kitchen.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://tum_kitchen/meshes/tum_kitchen.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tum_kitchen/materials/scripts</uri>
+            <uri>model://tum_kitchen/materials/textures</uri>
+            <name>tum_kitchen</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

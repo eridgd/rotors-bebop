@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gazebo version="1.0">
-    <world name="default">
+    <world name="3boxes_room">
+        <!-- Only one ROS interface plugin is required per world, as any other plugin can connect a Gazebo
+         topic to a ROS topic (or vise versa). -->
+        <plugin name="ros_interface_plugin" filename="librotors_gazebo_ros_interface_plugin.so"/>
+        
         <scene>
             <ambient rgba="0.5 0.5 0.5 1"/>
             <background rgba="0.5 0.5 0.5 1"/>
@@ -39,16 +43,26 @@
                 <origin pose="0 0 0 0 0 0"/>
                 <collision name="3boxes_room_collision">
                     <geometry>
-                        <mesh filename="3boxes_room.dae" scale="1 1 1"/>
+                        <mesh>
+                          <uri>file://3boxes_room.dae</uri>
+                          <scale>1 1 1</scale>
+                        </mesh>
                     </geometry>
                 </collision>
                 <visual name="3boxes_room" cast_shadows="false">
                     <geometry>
-                        <mesh filename="3boxes_room.dae" scale="1 1 1"/>
+                        <mesh>
+                          <uri>file://3boxes_room.dae</uri>
+                          <scale>1 1 1</scale>
+                        </mesh>
                     </geometry>
                 </visual>
             </link>
         </model>
-        <include filename="../models/banner_beta.model" model_name="banner_beta" model_pose="0.6 3.345 1.191 1.571 0 3.141" />
+        <!-- <include>
+            <uri>model://banner_beta.model</uri>
+            <name>banner_beta</name>
+            <pose>0.6 3.345 1.191 1.571 0 3.141</pose>
+        </include> -->
     </world>
 </gazebo>

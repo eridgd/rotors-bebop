@@ -41,7 +41,7 @@
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
   </group>
 
-  <node pkg="dronet_perception" name="dronet_perception" type="dronet_node.py" output="screen" launch-prefix="xterm -e" >   
+  <!-- <node pkg="dronet_perception" name="dronet_perception" type="dronet_node.py" output="screen" launch-prefix="xterm -e" >   
     <remap from="cnn_predictions" to="$(arg mav_name)/cnn_out/predictions"/>
     <remap from="state_change" to="$(arg mav_name)/state_change"/>
     <remap from="camera" to="$(arg mav_name)/image_raw"/>
@@ -51,6 +51,6 @@
     <param name="onboard_images_folder" value="$(find dronet_perception)/onboard_images"/>
     <param name="target_size" value="320,240"/>
     <param name="crop_size" value="200,200"/>
-  </node>
+  </node> -->
 
 </launch>
