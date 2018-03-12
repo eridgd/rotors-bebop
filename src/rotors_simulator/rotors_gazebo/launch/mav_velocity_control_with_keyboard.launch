@@ -35,7 +35,7 @@
     <node name="joy_node" pkg="joy" type="joy_node">
       <param name="dev" value="$(arg dev)" />
     </node>
-    <node name="key_joystick" pkg="rotors_joy_interface" type="key_joystick.py" />
+    <node name="key_joystick" pkg="rotors_joy_interface" type="key_joystick.py" output="screen"  />
     <node name="velocity_control_with_joy" pkg="rotors_gazebo" type="velocity_control_with_joy" output="screen" >
       <!-- <rosparam command="load" file="$(find rotors_gazebo)/resource/logitech_f710.yaml" /> -->
       <rosparam command="load" file="$(find rotors_gazebo)/resource/keyboard.yaml" />
@@ -44,7 +44,7 @@
       <remap from="~joy"  to="joy" />
       <remap from="~command/trajectory" to="command/trajectory" />
       <rosparam> 
-        max_vel: 1.5
+        max_vel: 2.0
         max_yawrate: 1.0
       </rosparam>
     </node>

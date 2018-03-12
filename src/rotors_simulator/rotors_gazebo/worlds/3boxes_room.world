@@ -44,7 +44,7 @@
                 <collision name="3boxes_room_collision">
                     <geometry>
                         <mesh>
-                          <uri>file://3boxes_room.dae</uri>
+                          <uri>model://3boxes_room.dae</uri>
                           <scale>1 1 1</scale>
                         </mesh>
                     </geometry>
@@ -52,7 +52,7 @@
                 <visual name="3boxes_room" cast_shadows="false">
                     <geometry>
                         <mesh>
-                          <uri>file://3boxes_room.dae</uri>
+                          <uri>model://3boxes_room.dae</uri>
                           <scale>1 1 1</scale>
                         </mesh>
                     </geometry>
