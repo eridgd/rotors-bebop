@@ -50,7 +50,8 @@ int main(int argc, char** argv) {
                     mav_msgs::default_topics::COMMAND_TRAJECTORY, 10);
 
   // Subscribe to joystick messages
-  joy_sub = nh.subscribe("joy", 10, &joy_callback);
+  // joy_sub = nh.subscribe("joy", 10, &joy_callback);
+  joy_sub = nh.subscribe("/bebop/cmd_vel", 10, &joy_callback);
 
   // Subscribe to gt odometry messages
   odom_sub = nh.subscribe("odom", 10, &odom_callback);

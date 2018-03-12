@@ -50,7 +50,7 @@ class Dronet(object):
             data = None
             while data is None:
                 try:
-                    data = rospy.wait_for_message("/ardrone/camera_base/image_raw", Image, timeout=10)
+                    data = rospy.wait_for_message("/bebop2/camera_base/image_raw", Image, timeout=10)
                 except:
                     pass
 

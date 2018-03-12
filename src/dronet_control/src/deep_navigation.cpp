@@ -91,7 +91,7 @@ void deepNavigation::run()
 
 void deepNavigation::deepNetworkCallback(const dronet_perception::CNN_out::ConstPtr& msg)
 {
-
+  ROS_INFO_STREAM(msg->collision_prob);
   probability_of_collision_ = msg->collision_prob;
   steering_angle_ = msg->steering_angle;
 
