@@ -4,13 +4,15 @@
   <arg name="enable_logging" default="false" />
   <arg name="enable_ground_truth" default="true" />
   <arg name="log_file" default="$(arg mav_name)" />
+  <arg name="dev" default="/dev/input/js2" />
+  <arg name="max_thrust" default="26.0" />
 
   <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find rotors_gazebo)/models"/>
   <env name="GAZEBO_RESOURCE_PATH" value="${GAZEBO_RESOURCE_PATH}:$(find rotors_gazebo)/models"/>
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(find rotors_gazebo)/worlds/$(arg world_name).world"/>
     <!-- <arg name="debug" value="true"/> -->
-    <arg name="paused" value="true"/>
+    <arg name="paused" value="false"/>
     <!-- <arg name="gui" value="false"/> -->
   </include>
 
@@ -22,9 +24,15 @@
       <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
       <arg name="log_file" value="$(arg log_file)"/>
     </include>
-    <node name="key_joystick" pkg="rotors_joy_interface" type="key_joystick.py" />
-    <node name="joy_node" pkg="joy" type="joy_node" />
-    <node name="rotors_joy_interface" pkg="rotors_joy_interface" type="rotors_joy_interface" />
+    <node name="key_joystick" pkg="rotors_joy_interface" type="key_joystick.py">
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/keyboard.yaml" />
+    </node>
+    <node name="joy_node" pkg="joy" type="joy_node">
+      <param name="dev" value="$(arg dev)" />
+    </node>
+    <node name="rotors_joy_interface" pkg="rotors_joy_interface" type="rotors_joy_interface" output="screen">
+      <param name="max_thrust" value="$(arg max_thrust)" />
+    </node>    
     <node name="roll_pitch_yawrate_thrust_controller_node" pkg="rotors_control" type="roll_pitch_yawrate_thrust_controller_node" output="screen">
       <rosparam
         command="load" file="$(find rotors_gazebo)/resource/roll_pitch_yawrate_thrust_controller_$(arg mav_name).yaml" />
