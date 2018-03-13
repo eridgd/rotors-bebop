@@ -33,7 +33,7 @@ Then run a launch file that initiates a (virtual) joystick node and velocity con
 
 `roslaunch rotors_gazebo mav_velocity_control_with_keyboard.launch dev:=/dev/input/js0`
 
-The `dev:=/dev/input/jso` part assigns a virtual joystick device to the parameter `dev`. Change this if the device is at a different location (you'll only see it when the keyboard script is run).
+The `dev:=/dev/input/js0` part assigns a virtual joystick device to the parameter `dev`. Change this if the device is at a different location (you'll only see it when the keyboard script is run).
 
 The virtual joystick only receives input when its window is active. The controls are mapped to:
 
