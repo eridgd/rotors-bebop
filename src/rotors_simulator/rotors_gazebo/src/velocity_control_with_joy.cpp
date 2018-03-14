@@ -25,6 +25,7 @@ sensor_msgs::Joy joy_msg;
 
 bool joy_msg_ready = false;
 bool joy_enable = true;
+bool init_pose_set = false;
 
 int axis_roll  , axis_pitch, 
     axis_thrust, axis_yaw;
@@ -81,6 +82,11 @@ void joy_enable_callback(const std_msgs::Bool& msg)
 {
   ROS_INFO("Changing joy_enable to %d", msg.data);
   joy_enable = msg.data;
+
+  // If we are re-enabling the joystick the init_position might have changed, so make sure it's updated
+  if (joy_enable == true) {
+    init_pose_set = false;
+  }
 }
 
 void joy_callback(const sensor_msgs::JoyConstPtr& msg){
@@ -95,7 +101,6 @@ void odom_callback(const nav_msgs::OdometryConstPtr& msg){
  
   odom_msg = *msg;
  
-  static bool init_pose_set = false;
   static ros::Time prev_time = ros::Time::now();
   static Eigen::Vector3d init_position;
   static double init_yaw;
