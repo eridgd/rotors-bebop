@@ -4,7 +4,7 @@
   <arg name="enable_logging" default="false" />
   <arg name="enable_ground_truth" default="true" />
   <arg name="log_file" default="$(arg mav_name)" />
-  <arg name="dev" default="/dev/input/js2" />
+  <arg name="dev" default="/dev/input/js3" />
   <arg name="debug" default="false"/>
   <arg name="gui" default="true"/>
   <arg name="paused" default="false"/>
@@ -34,6 +34,8 @@
     </node>
     <!-- <node name="key_joystick" pkg="rotors_joy_interface" type="key_joystick.py" output="screen"  /> -->
     <node name="velocity_control_with_joy" pkg="rotors_gazebo" type="velocity_control_with_joy" output="screen" >
+      <!-- <rosparam command="load" file="$(find rotors_gazebo)/resource/logitech_f710.yaml" /> -->
+      <!-- <rosparam command="load" file="$(find rotors_gazebo)/resource/keyboard.yaml" /> -->
       <rosparam command="load" file="$(find rotors_gazebo)/resource/ps3.yaml" />
       <!--<remap from="~odom" to="odometry_sensor1/odometry" />-->
       <remap from="~odom" to="ground_truth/odometry" />
@@ -47,23 +49,24 @@
     <node name="lee_position_controller_node" pkg="rotors_control" type="lee_position_controller_node" output="screen">
       <rosparam command="load" file="$(find rotors_gazebo)/resource/lee_controller_$(arg mav_name).yaml" />
       <rosparam command="load" file="$(find rotors_gazebo)/resource/$(arg mav_name).yaml" />
-      <remap from="odometry" to="odometry_sensor1/odometry" />
+      <remap from="odometry" to="ground_truth/odometry" />
     </node>
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
   </group>
 
-  <arg name="namespace" default="bebop" />
+  <!-- DroNet -->
+
   <node pkg="dronet_perception" name="dronet_perception" type="dronet_node.py" output="screen" launch-prefix="xterm -e" >   
-    <remap from="cnn_predictions" to="$(arg namespace)/cnn_out/predictions"/>
-    <remap from="state_change" to="$(arg namespace)/state_change"/>
-    <remap from="camera" to="$(arg namespace)/image_raw"/>
-    <remap from="land" to="$(arg namespace)/land"/>
-    <param name="json_model_path" value="$(find dronet_perception)/models/model_struct.json"/>
-    <param name="weights_path" value="$(find dronet_perception)/models/model_weights_59.h5"/>
-    <param name="onboard_images_folder" value="$(find dronet_perception)/onboard_images"/>
-    <param name="target_size" value="320,240"/>
-    <param name="crop_size" value="200,200"/>
+      <remap from="cnn_predictions" to="/cnn_out/predictions"/>
+      <remap from="state_change" to="$(arg mav_name)/state_change"/>
+      <remap from="camera" to="$(arg mav_name)/image_raw"/>
+      <remap from="land" to="$(arg mav_name)/land"/>
+      <param name="json_model_path" value="$(find dronet_perception)/models/model_struct.json"/>
+      <param name="weights_path" value="$(find dronet_perception)/models/model_weights_59.h5"/>
+      <param name="onboard_images_folder" value="$(find dronet_perception)/onboard_images"/>
+      <param name="target_size" value="320,240"/>
+      <param name="crop_size" value="200,200"/>
   </node>
 
 </launch>

@@ -49,7 +49,7 @@ int main(int argc, char** argv) {
   trajectory_pub = nh.advertise<trajectory_msgs::MultiDOFJointTrajectory>(
                     mav_msgs::default_topics::COMMAND_TRAJECTORY, 10);
 
-  // Subscribe to joystick messages
+  // Subscribe to bebop velocity commands messages
   // joy_sub = nh.subscribe("joy", 10, &joy_callback);
   joy_sub = nh.subscribe("/bebop/cmd_vel", 10, &joy_callback);
 

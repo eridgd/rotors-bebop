@@ -59,6 +59,7 @@ class Dronet(object):
             else:
                 print("NOT Publishing commands!")
 
+            # Note that this call will save images if self.use_network_out is True (when DroNet takes over)
             cv_image = utils.callback_img(data, self.target_size, self.crop_size,
                 self.imgs_rootpath, self.use_network_out)
             outs = self.model.predict_on_batch(cv_image[None])

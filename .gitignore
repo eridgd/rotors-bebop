@@ -2,3 +2,5 @@ build/
 .catkin_tools/  
 devel/ 
 logs/ 
+src/dronet_perception/onboard_images/
+.pyc
