@@ -38,6 +38,7 @@
       <!-- <rosparam command="load" file="$(find rotors_gazebo)/resource/keyboard.yaml" /> -->
       <!-- <rosparam command="load" file="$(find rotors_gazebo)/resource/ps3.yaml" /> -->
       <!--<remap from="~odom" to="odometry_sensor1/odometry" />-->
+      <remap from="~joy_enable" to="joy_enable" />
       <remap from="~odom" to="ground_truth/odometry" />
       <remap from="~joy"  to="joy" />
       <remap from="~command/trajectory" to="command/trajectory" />

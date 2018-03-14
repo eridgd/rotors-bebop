@@ -4,6 +4,7 @@
 #include <Eigen/Core>
 #include <mav_msgs/conversions.h>
 #include <mav_msgs/default_topics.h>
+#include <std_msgs/Bool.h>
 #include <ros/ros.h>
 #include <trajectory_msgs/MultiDOFJointTrajectory.h>
 
@@ -18,11 +19,12 @@
 #define DEG2RAD(x) ((x) / 180.0 * M_PI)
 
 ros::Publisher trajectory_pub;
-ros::Subscriber odom_sub, joy_sub;
+ros::Subscriber odom_sub, joy_sub, joy_enable_sub;
 nav_msgs::Odometry odom_msg;
 sensor_msgs::Joy joy_msg;
 
 bool joy_msg_ready = false;
+bool joy_enable = true;
 
 int axis_roll  , axis_pitch, 
     axis_thrust, axis_yaw;
@@ -37,6 +39,7 @@ double max_vel,
 
 void joy_callback(const sensor_msgs::JoyConstPtr& msg);
 void odom_callback(const nav_msgs::OdometryConstPtr& msg);
+void joy_enable_callback(const std_msgs::Bool& msg);
 
 int main(int argc, char** argv) {
 
@@ -46,6 +49,9 @@ int main(int argc, char** argv) {
   // Continuously publish waypoints.
   trajectory_pub = nh.advertise<trajectory_msgs::MultiDOFJointTrajectory>(
                     mav_msgs::default_topics::COMMAND_TRAJECTORY, 10);
+
+  // Subscribe to message for enabling/disabling joystick control
+  joy_enable_sub = nh.subscribe("joy_enable", 10, &joy_enable_callback);
 
   // Subscribe to joystick messages
   joy_sub = nh.subscribe("joy", 10, &joy_callback);
@@ -71,6 +77,12 @@ int main(int argc, char** argv) {
   ros::spin();
 }
 
+void joy_enable_callback(const std_msgs::Bool& msg)
+{
+  ROS_INFO("Changing joy_enable to %d", msg.data);
+  joy_enable = msg.data;
+}
+
 void joy_callback(const sensor_msgs::JoyConstPtr& msg){
   joy_msg = *msg;
   joy_msg_ready = true;
@@ -78,7 +90,7 @@ void joy_callback(const sensor_msgs::JoyConstPtr& msg){
 
 void odom_callback(const nav_msgs::OdometryConstPtr& msg){
   
-  if(joy_msg_ready == false)
+  if(joy_msg_ready == false || joy_enable == false)
     return;
  
   odom_msg = *msg;
