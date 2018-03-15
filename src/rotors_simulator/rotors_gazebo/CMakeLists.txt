@@ -74,12 +74,16 @@ add_executable(velocity_control_with_joy src/velocity_control_with_joy.cpp)
 target_link_libraries(velocity_control_with_joy ${catkin_LIBRARIES})
 add_dependencies(velocity_control_with_joy ${catkin_EXPORTED_TARGETS})
 
+add_executable(velocity_control_by_dronet src/velocity_control_by_dronet.cpp)
+target_link_libraries(velocity_control_by_dronet ${catkin_LIBRARIES})
+add_dependencies(velocity_control_by_dronet ${catkin_EXPORTED_TARGETS})
+
 foreach(dir launch models resource worlds)
    install(DIRECTORY ${dir}/
       DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/${dir})
 endforeach(dir)
 
-install(TARGETS waypoint_publisher waypoint_publisher_file hovering_example velocity_control_with_joy
+install(TARGETS waypoint_publisher waypoint_publisher_file hovering_example velocity_control_with_joy velocity_control_by_dronet
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

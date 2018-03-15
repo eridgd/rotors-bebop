@@ -32,7 +32,7 @@
 
   <!-- push robot_description to factory and spawn robot in gazebo -->
   <node name="spawn_$(arg namespace)" pkg="gazebo_ros" type="spawn_model"
-   args="-param robot_description
+   args="-param /$(arg mav_name)/robot_description
          -urdf
          -x $(arg x)
          -y $(arg y)

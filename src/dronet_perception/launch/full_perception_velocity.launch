@@ -47,6 +47,15 @@
         max_yawrate: 1.0
       </rosparam>
     </node>
+    <node name="velocity_control_by_dronet" pkg="rotors_gazebo" type="velocity_control_by_dronet" output="screen" >
+   s   <remap from="~odom" to="ground_truth/odometry" />
+      <!-- <remap from="~joy"  to="joy" /> -->
+      <remap from="~command/trajectory" to="command/trajectory" />
+      <rosparam> 
+        max_vel: 1.0
+        max_yawrate: 1.5
+      </rosparam>
+    </node>
     <node name="lee_position_controller_node" pkg="rotors_control" type="lee_position_controller_node" output="screen">
       <rosparam command="load" file="$(find rotors_gazebo)/resource/lee_controller_$(arg mav_name).yaml" />
       <rosparam command="load" file="$(find rotors_gazebo)/resource/$(arg mav_name).yaml" />
@@ -71,17 +80,21 @@
   </node>
 
   <node pkg="dronet_control" name="dronet_control" type="dronet_control" output="screen" launch-prefix="xterm -e" >   
-          <remap from="cnn_predictions" to="/cnn_out/predictions"/>
-          <remap from="state_change" to="$(arg mav_name)/state_change"/>
-          <remap from="velocity" to="/bebop/cmd_vel/"/>
-          <param name="alpha_yaw" value="0.7"/>
-          <param name="alpha_velocity" value=".4"/>
-          <param name="max_forward_index" value="0.4"/>
-          <param name="critical_prob" value="1.3"/>
-          <param name="cmd_vel_timeout" value="0.1" />
+      <remap from="cnn_predictions" to="/cnn_out/predictions"/>
+      <remap from="state_change" to="$(arg mav_name)/state_change"/>
+      <remap from="velocity" to="/bebop/cmd_vel/"/>
+      <param name="alpha_yaw" value="0.7"/>
+      <param name="alpha_velocity" value=".4"/>
+      <param name="max_forward_index" value="1.0"/>
+      <param name="critical_prob" value="1.3"/>
+      <param name="cmd_vel_timeout" value="0.1" />
   </node>
 
   <node pkg="rostopic" type="rostopic" name="rostopic" args="pub --once /$(arg mav_name)/state_change std_msgs/Bool 'data: false'" />
 
+  <!-- Dashboard & Vis Tools -->
+
   <node pkg="rqt_gui" type="rqt_gui" name="rqt_gui" />
+
+  <!-- <node pkg="rviz" type="rviz" name="rviz" /> -->
 </launch>

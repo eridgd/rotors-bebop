@@ -37,7 +37,7 @@ double max_vel,
        max_yawrate;
 
 
-void joy_callback(const geometry_msgs::TwistConstPtr& twist_ptr);
+void joy_callback(const geometry_msgs::TwistConstPtr& msg);
 void odom_callback(const nav_msgs::OdometryConstPtr& msg);
 
 int main(int argc, char** argv) {
@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
   // Subscribe to gt odometry messages
   odom_sub = nh.subscribe("odom", 10, &odom_callback);
 
-  ROS_INFO("Started velocity_control_with_joy.");
+  ROS_INFO("Started velocity_control_by_dronet.");
 
   nh.param("axis_roll_"  , axis_roll, 3);
   nh.param("axis_pitch_" , axis_pitch, 4);
@@ -74,22 +74,25 @@ int main(int argc, char** argv) {
   ros::spin();
 }
 
-void joy_callback(const geometry_msgs::TwistConstPtr& twist_ptr){
+void joy_callback(const geometry_msgs::TwistConstPtr& msg){
   joy_msg = *msg;
   joy_msg_ready = true;
 }
 
 void odom_callback(const nav_msgs::OdometryConstPtr& msg){
-  
   if(joy_msg_ready == false)
     return;
- 
+
   odom_msg = *msg;
  
   static bool init_pose_set = false;
   static ros::Time prev_time = ros::Time::now();
   static Eigen::Vector3d init_position;
   static double init_yaw;
+
+  // ROS_INFO("controls");
+  // ROS_INFO_STREAM(joy_msg.linear.x);
+  // ROS_INFO_STREAM(joy_msg.angular.z);
 
   if(init_pose_set == false){
     Eigen::Affine3d eigen_affine;
@@ -109,10 +112,15 @@ void odom_callback(const nav_msgs::OdometryConstPtr& msg){
   double dt = (ros::Time::now() - prev_time).toSec();
   prev_time = ros::Time::now();
 
-  double yaw    = joy_msg.axes[axis_yaw]    * axis_direction_yaw;
-  double roll   = joy_msg.axes[axis_roll]   * axis_direction_roll;
-  double pitch  = joy_msg.axes[axis_pitch]  * axis_direction_pitch;
-  double thrust = joy_msg.axes[axis_thrust] * axis_direction_thrust;
+  // double yaw    = joy_msg.axes[axis_yaw]    * axis_direction_yaw;
+  // double roll   = joy_msg.axes[axis_roll]   * axis_direction_roll;
+  // double pitch  = joy_msg.axes[axis_pitch]  * axis_direction_pitch;
+  // double thrust = joy_msg.axes[axis_thrust] * axis_direction_thrust;
+
+  double yaw    = joy_msg.angular.z    * axis_direction_yaw;
+  double roll   = 0.0;
+  double pitch  = joy_msg.linear.x;
+  double thrust = 0.0;
 
   Eigen::Vector3d desired_dposition( cos(init_yaw) * pitch - sin(init_yaw) * roll, 
                                      sin(init_yaw) * pitch + cos(init_yaw) * roll, 
