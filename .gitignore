@@ -3,4 +3,4 @@ build/
 devel/ 
 logs/ 
 src/dronet_perception/onboard_images/
-.pyc
+*.pyc
