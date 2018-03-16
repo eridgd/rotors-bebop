@@ -147,7 +147,7 @@
       image_height="480"
       image_format="R8G8B8"
       min_distance="0.02"
-      max_distance="50"
+      max_distance="250"
       noise_mean="0.0"
       noise_stddev="0.007"
       enable_visual="true">
