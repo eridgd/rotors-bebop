@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+#include <math.h>
 
 #include <Eigen/Core>
 #include <mav_msgs/conversions.h>
@@ -36,6 +37,8 @@ int axis_direction_roll,
 double max_vel,
        max_yawrate;
 
+double distance_traveled;
+
 
 void joy_callback(const geometry_msgs::TwistConstPtr& msg);
 void odom_callback(const nav_msgs::OdometryConstPtr& msg);
@@ -70,6 +73,8 @@ int main(int argc, char** argv) {
  
   nh.param("max_vel", max_vel, 1.0);
   nh.param("max_yawrate", max_yawrate, DEG2RAD(45));
+
+  distance_traveled = 0.0;
   
   ros::spin();
 }
@@ -125,7 +130,16 @@ void odom_callback(const nav_msgs::OdometryConstPtr& msg){
   Eigen::Vector3d desired_dposition( cos(init_yaw) * pitch - sin(init_yaw) * roll, 
                                      sin(init_yaw) * pitch + cos(init_yaw) * roll, 
                                      thrust);
+
+  Eigen::Vector3d desired_dposition_scaled = desired_dposition * max_vel * dt;
+
+  Eigen::Vector3d old_position(init_position.data());
+
   init_position += desired_dposition * max_vel * dt;
+
+  distance_traveled += (old_position - init_position).lpNorm<2>();
+
+  ROS_INFO("Distance Traveled: %f", distance_traveled);
 
   init_yaw = init_yaw + max_yawrate * yaw * dt;
 
